@@ -1,0 +1,385 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="js/compiler.js" type="text/javascript"></script>
+		<script src="js/executor.js"></script>
+		<script src="js/debuggerr.js"></script>
+		<script src="js/FileSave.js"></script>
+		<script src="js/readFile.js"></script>
+		<script src='jquery/jquery-2.1.1.min.js' type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	<!--	<script src="../socket.io/node_modules/socket.io-client/socket.io.js"></script>-->
+
+  		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+		<!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />-->
+
+
+		<title>
+			Assembly Simulator 
+		</title>
+	</head>
+	<body>
+		<form action='/' method='post'>
+
+		<table class='page' align='center' border='0'>
+			<tr >	
+
+					<td>
+					<table id='primary'>
+					<tr height='97%'><td>
+						<!-- 	<div style="margin-left:35px;max-width:40px; "><img id='icmenu' class='btn' onclick="openMenu()" src='images/menu.svg'/></div> -->
+						
+						<div id='header' style='padding-top:5px;'>
+							<ul class="tabs" >
+								<li id='ta1li' style="margin-top:2px;"><a href='#tab1'> Edit</a></li>
+								<li id='ta2li'><a href='#tab2'> Execute</a></li>
+							</ul>
+							<div id='menu' >
+								<img id='executer' class='btn' onclick="execute()" src='images/exxxecute.svg' title='Execute the code - Ctrl + F3' />
+
+								<img id='startUpDebugger' class='btn' onclick="startUpDebuggerr()" src='images/debug.svg' title='Start Debugger - Ctrl + F6'/>
+								<img id='backwards' class='btnDisabled' onclick="backwaards()" src='images/previos.svg' title='Step Back - Ctrl + <-'/>
+								<img id='foward' class='btnDisabled' onclick="debugFoward()" src='images/next.svg' disable='true' title='Step Foward - Ctrl + ->'/>
+								<img id='stepDebugger' class='btn' onclick="addStepCounter()" src='images/count0.svg' title='Start Debugger - Ctrl + F6'/>
+								
+								<img id='fileSave' class='btn' onclick="downloadFile()" src='images/fileDownload.svg' style="margin-left:30px;" title='Download code into a file - Ctrl + D'/>
+								<img id='uploadFile' class='btn' onclick="handleFileSelect()" src='images/openFolder.svg'  title="Upload a file" />
+								<input id='fileChooser' type='file' hidden='true'/>
+
+								<img id='clear' class='btn' onclick="clearRegisters()" src='images/clear.svg' style="margin-left:30px;" title="Clear registers and memory - Ctrl + shift" />
+
+								<!-- <input class='btn' id='executer' type="button" onclick="execute()" value='execute'></input> 
+								 <input class="btn" id='fileSave' type="button" onclick="downloadFile()" value='downLoadFile'/> 
+								 <input class='btn'  id='startUpDebugger' type='button' onclick="startUpDebuggerr()" value='startUpDebugger'/>
+								<input class='btn' id='foward' type='button' onclick="debugFoward()" value='foward'/> 
+								 <input class='btn' id='backwards' type='button' onclick="backwaards()" value='backwards'/> 
+								<input class='clearRegisters' id='clean' type='button' onclick="clearRegisters()" ></input>-->
+							</div>
+						</div>
+						<div id='tabs'>
+							<div id='tab1' >
+								<div id='codeArea' >
+									<table style="width:100%">
+										<tr style="width:100%">
+										<td style="width:13px;height:100%; overflow-x: hidden;">
+											<textarea id='codelines' disabled="true" style='overflow-y: hidden;'></textarea>
+										</td>
+										<td style="width:97%;height:100%">
+												<textarea type='text' id='codeText' name='codeText' spellcheck='false'></textarea>
+										</td>
+										</tr>
+									</table>
+								</div>
+								<div id='errorArea' >
+									<textarea id='errorlog' disabled='true'></textarea>
+								</div>
+							</div>
+							<div id='tab2' hidden='true'>
+								<div class='textSegment'>
+								<div class='fixed'>Adress</div><div class='fixed' style="margin-left:33.9%;margin-top:-14px;">Code</div><div class='fixed' style="margin-left: 630px; margin-top: -14px; max-width:30px;">Source</div>
+								<div  style="overflow-y:scroll; max-height:300px;border-top:1px solid;border-bottom:1px solid; ">
+
+								<table  style="width:100% " id='tableSegment'>
+									<tr>
+										<td id='hexaAdress' style="padding-right: 1px;" >
+										</td>
+										<td id='hexaCode' style="padding-right: 1px; padding-left: 1px;">
+										</td>
+										<td id='segmentCode' style="padding-right: 2px; padding-left: 1px;">
+										</td>
+									</tr>
+								</table>
+								</div>
+								</div>
+								<div id='dataSegment' >
+								<table border="1px" border="1px" style="height:15px">
+									<tr class='dts_title'>
+										<td >Adress</td><td >value(+0)</td><td >value(+4)</td><td >value(+8)</td><td >value(+c)</td><td >value(+10)</td><td >value(+14)</td><td >value(+18)</td><td >value(+1c)</td>
+									</tr>
+								</table>
+
+								<table>
+									<tr class='dts_title'>
+										<td id='adress0'></td><td id='adress1'></td><td id='adress2'></td><td id='adress3'></td><td id='adress4'></td><td id='adress5'></td><td id='adress6'></td><td id='adress7'</td><td id='adress8'</td>
+									</tr>
+								</table>
+								<div id='changeAdress'>
+									<img id='decresseAdress' class='btn' onclick="decresseAdres($('#adressPosition').val())" src='images/backwards.svg' disable='true' />
+									<input id='adressPosition' class='inputAdress' type='text' disabled="true"/>
+									<img id='incresseAdress' class='btn' onclick="incresseAdres($('#adressPosition').val())" src='images/foward.svg' disable='true' />
+								</div>
+									<!-- <div class='fixed'>Adress</div><div class='fixed'>value(+0)</div><div class='fixed'>value(+4)</div><div class='fixed'>value(+8)</div><div class='fixed'>value(+c)</div><div class='fixed'>value(+10)</div><div class='fixed'>value(+14)</div><div class='fixed'>value(+18)</div><div class='fixed'>value(+1c)</div> -->
+								</div>
+							</div>
+						</div>		
+					</td></tr>
+					</table>
+				</td>
+				<td id='sidebar'>
+						<table id='registersTable' >
+							<tr>
+								<td id='registersName' style="width:68px" >
+								</td>
+								<td id='registersNumber' style="width:55px">
+								</td>
+								<td id='registersValue' style="width:226px">
+								</td>
+							</tr>
+						</table>
+				</td>
+			</tr>
+			<div id='dialog' hidden='true'>
+				<div>File name: <input type="input" id='fileName'/>.asm</div>
+				<div><img id='download' class='btn' onclick="downloadFile()" src='images/fileDownload.svg' /></div>
+			</div>
+		</table>
+		</form>
+
+		<script>
+				//var socket = io();
+			$(document).ready(function() {
+				$('#adressPosition').val('0x00000000');
+			    $("ul.tabs a").click(function() {
+			        /*$($(this).attr("href")).show();
+			        $($(this).attr("href")+' div').show();*/
+		         	if(($(this).attr("href")).contains('1')){
+				        $("#tab2").hide();
+				        $("#tab1").show();
+		         		$("#ta1li").css("margin-top",'2px');
+		         		$("#ta2li").css("margin-top",'0px');
+					}else{
+						$("#tab1").hide();
+				        $("#tab2").show();
+						$("#ta1li").css("margin-top",'0px');
+		         		$("#ta2li").css("margin-top",'2px');
+					}		    		
+			    });
+			  
+			});
+			$(function(){
+		 	   $("#fileChooser").change(function(e){ delegateFileSelect()});
+			});
+
+			$(document).keydown(function(e) {
+				//console.log(e.keyCode);
+		        if(e.keyCode == 114 && e.ctrlKey) {
+		           execute();
+		        }else if(e.keyCode == 39 && e.ctrlKey) {
+		           	if(fwrdBool){	
+		           		debugFoward();
+		           	}
+		        }else if(e.keyCode == 37 && e.ctrlKey) {
+		        	if(backBool){
+		           		backwaards();
+		        	}
+		        }else if(e.keyCode == 68 && e.ctrlKey) {
+		        	downloadFile();
+		        }else if(e.keyCode == 117 && e.ctrlKey){
+		        	startUpDebugger();
+		        }else if(e.keyCode == 16 && e.ctrlKey){
+		        	clearRegisters();
+		        }
+
+		    });
+
+			var zero = '00000000000000000000000000000000';
+			var numberDebug = 0;
+
+			var ucp;
+			var memory;
+			var count=1;
+			var typingTimer;                //timer identifier
+			var doneTypingInterval = 500;  //time in ms
+			var errorLog ='';
+			var binaryCode = '';	/* add      sub       addu      subu      slt       sltu      and       nor        or        sll       srl      jr      */
+			var instructionsFuncs = ['100000', '100010', '100001', '100011', '101010', '101011', '100100', '100110' , '100101', '000000', '000010', '001000'];
+
+			var instructions = ['add', 'sub', 'addu', 'subu', 'slt', 'sltu',  'and', 'nor', 'or', 'sll', 'srl',/**/ 'ori', 'andi', 'addi', 'addiu', 'slti', 'sltiu',  /**/'beq', 'bne',  /**/'lw', 'sw', 'lb', 'lbu', 'lhu', 'sb',/**/ 'lui', 'li', 'jr', 'j', 'jal'];
+
+			var instructionsBin = ['000000', '000000', '000000', '000000', '000000', '000000', '000000', '000000', '000000', '000000', '000000', '001101',  '001100',  '001000', '001001',  '001010', '001011', '000100', '000101', '100011', '101011', '100000', '100100', '100101', '101000', '001111', '001001', '000000', '000010', '000011'];
+
+			var registers= ['$zero', '$at', '$v0', '$v1', '$a0', '$a1', '$a2', '$a3', '$t0', '$t1', '$t2', '$t3', '$t4', '$t5', '$t6', '$t7', '$s0', '$s1', '$s2', '$s3', '$s4', '$s5', '$s6', '$s7', '$t8', '$t9', '$k0', '$k1', '$gp', '$sp', '$fp', '$ra'];
+			var registersBin= [];
+
+			var zero = '00000000000000000000000000000000';
+
+			var labels = [];
+			var labelsBin = [];
+			window.onload = function(){
+				ucp = new UCP();
+				ula = new ULA();
+				ucp.registers[29].setData(integerTo32Bits(40000));
+
+				for (var i = 0; i < registers.length; i++) {
+					registersBin[i] = integerTo5bits(i);
+					var paridade;
+					var base
+
+					i%2==0 ? paridade = 'divpar' :  paridade = 'divimpar'; 
+					i == 29 ? base = integerTo32Bits(40000) : base = zero;
+					$('#registersName').append('<div  class=\''+ paridade+'\'>'+registers[i]+'</div>');
+					$('#registersNumber').append('<div class=\''+ paridade+'\'>'+i+'</div>');
+					$('#registersValue').append('<div id=\'reg'+i+'\' style:"width:\'240px\' class=\''+ paridade+'\' onclick = \'changeRegisterValue(this.id)\' ">'+ base+'</div>');
+				}
+
+				updateAdress();
+
+				$(function (){
+				    $('#dialog').dialog({
+				    	autoOpen: false,
+				        height: 350,
+				        width: 350,
+				        modal: true,
+				        resizable: true,
+				        position: ['center',20]
+				    });
+				});
+
+			};
+			
+			//on keyup, start the countdown
+			$('#codeText').keyup(function(){
+			    clearTimeout(typingTimer);
+			    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+			    var lines = $('#codeText').val().split('\n');
+			    var count =''
+			    for (var i = 1; i <= lines.length; i++) {
+			    	count += i+'\n';
+			    }
+	    		$('#codelines').val(count);	
+			});
+
+
+			//user is "finished typing," do something
+			function doneTyping () {
+				var jow = startUpCompiler($('#codeText').val());
+				binaryCode = jow[0];
+			//	console.log(jow);
+				var cod =''
+				for (var i = 0; i < binaryCode.length; i++) {
+					i%32 == 0 ? cod += '\n'+binaryCode[i]: cod+= binaryCode[i];
+				}
+				//console.log(cod);
+				//console.log(jow[0].slice(0,6)+'-'+jow[0].slice(6,11)+'-'+jow[0].slice(11,16)+'-'+jow[0].slice(16,21)+'-'+jow[0].slice(21,26)+'-'+jow[0].slice(26,32));
+				//console.log(jow[0].length);
+
+				$('#errorlog').val(errorLog);
+			}
+
+			// on scroll code area, scroll line numbers area
+			$('#codeText').scroll(function(event){ 
+				 $('#codelines').scrollTop($(this).scrollTop());
+			});
+
+			//on keydown, clear the countdown 
+			$('#codeText').keydown(function(){
+			    clearTimeout(typingTimer);
+			});
+
+			// execute code
+			function execute(){
+				var jow = startUpCompiler($('#codeText').val());
+				binaryCode = jow[0];
+
+				buildTab2();
+				if(errorLog == ''){
+					startUpExecutor();
+				}else{
+					alert('There are errors to be solved');
+				}
+			}
+
+			// convert integer to 5 bits word
+			function integerTo5bits(number){
+				var test = parseInt(number).toString(2);
+				var aux='';
+				if(test.length < 5){
+					for (var i = 0; i< 5-test.length; i++)
+						aux +='0';
+				}
+				return aux + test;
+			}
+
+			function updateRegistersValue(){
+				var tab = document.getElementById('registersValue').childNodes;
+					for (var i = 1; i < 32; i++) {
+						tab[i].innerHTML = ucp.registers[i-1].getData();
+					}
+			}
+		
+			// onclick, tranforms register div into a testarea
+			function changeRegisterValue(divId){
+				var editableText = $("<textarea id='tempTextarea' class='tempTextarea'/>");
+  				editableText.val($("#"+divId).html());
+			    $("#"+divId).replaceWith(editableText);
+			    editableText.focus();
+			    DIV = divId;
+			    editableText.blur(editableTextBlurred);
+
+			}
+
+			function editableTextBlurred(){
+				var html = $(this).val();
+				var id = DIV.replace('reg', '');
+				ucp.registers[id].setData(html);
+				var css;
+				parseInt(id)%2 == 0 ? css = 'divpar' : css = 'divimpar';  
+			    var viewableText = $("<div id='"+DIV+ "' class='"+css+"' onclick='changeRegisterValue(this.id)' >");
+			    viewableText.html(html);
+			    $(this).replaceWith(viewableText);
+			    // setup the click event for this new div
+			    $(viewableText).click(changeRegisterValue('this.id'));
+			}
+			
+			function clearRegisters(){
+				var td = document.getElementById('registersValue').childNodes;
+				ucp.MEMORY = [];
+				for (var i = 1; i < 33; i++) {
+					td[i].innerHTML = zero;
+					ucp.registers[i-1].setData(zero);
+				}
+				td[30].innerHTML = integerTo32Bits(40000);
+				ucp.registers[29].setData(integerTo32Bits(40000));
+				updateAdress();
+			}
+
+			function downloadFile(){
+				var blob = new Blob([$('#codeText').val()], {type: "text/plain;charset=utf-8"});
+				saveAs(blob, 'mips.asm');
+			}
+
+			function openDialog(){
+				$("#dialog").dialog('open');
+			}
+
+			function openMenu(){
+				if($('#menu').is(":visible")){
+					$('#menu').hide();
+				}else
+					$('#menu').show();
+			}
+
+			function addStepCounter(){
+				var aux = ($('#stepDebugger').attr('src')[12]);
+				aux == 6 ? aux = 0 : aux++;
+				stepCounter = aux;
+				$('#stepDebugger').attr('src', 'images/count'+aux+'.svg')
+			}
+
+		</script>
+		<style>
+			.tempTextarea{
+				width: 224px;
+				height: 17px;
+				resize: none;
+				border: 0px solid;
+				font-family: "Ubuntu Mono";	
+				font-size: 14px;
+				color: #000;
+
+			}
+
+		</style>
+	</body>	
+</html>

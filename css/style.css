@@ -1,0 +1,284 @@
+body{
+	font-size: 14px;
+	font-family: "Ubuntu Mono";	
+	background-color: #161713;
+	min-width: 1024px;
+}
+.page{
+	height: 620px;
+	width: 98%;
+	/*background-color: #272822;*/
+}
+#primary{
+	height: 100%;
+	width: 100%;
+}
+#primary tr{
+	padding: 0px;
+	margin: 0px;
+}
+#primary td{
+	padding: 0px;
+	margin: 0px;
+}
+#primary div{
+	width: 100%;
+	border: 0px solid;
+}
+#primary table{
+	height: 100%;
+}
+#menu{
+	height: 8%;
+	position: inherit;
+	max-width: 400px;
+	margin-left: 45%; 
+	margin-top: -35px;
+	float: right;
+}
+#tabs{
+	margin-top: 2px;
+	height: 80%;
+	width: 98%;
+}
+#tab1{
+	height: 100%;
+	text-align: top;
+	max-height: 418px;
+	width: 98%;
+}
+#tab1 td{
+	clear: both;
+	border: 0px solid;.
+}
+#tab2{
+	height: 100%;
+	text-align: top;
+	max-height: 418px;
+	width: 98%;
+	border: 1px solid;
+}
+#codeArea{
+	background-color: #272822;
+	height: 88%;
+	width: 94%;
+	border: 0.01px solid !important;
+	padding-bottom: 11px;
+}
+#errorArea{
+	width: 100%;
+	height: 46%;
+	max-height: 185px;
+	border: 1px solid !important;
+	background-color: #272822;
+}
+.textSegment{
+	background-color: #272822;
+	max-height: 100%;
+	width: 94%;
+	border: 0.01px solid !important;
+	padding-bottom: 11px;
+}
+#tableSegment div{
+	border: 1px solid;
+}
+#tableSegment td{	
+	color: #fff;
+	font-size: 15px;
+	width: 34%;
+}
+#dataSegment{
+	width: 100%;
+	border: 1px solid !important;
+	background-color: #272822;
+}
+
+#errorlog{
+	background-color: #272822;
+	width: 99%;
+	height: 99%;
+	border: 0px solid;
+	resize: none;	
+	margin-left: 1px;
+	/*background-color: #222;*/
+}
+#codeText{
+	background-color: #272822;
+	color: #9f9f9f;
+	width: 99.3%;
+	height: 100%;
+	border: 0px solid;
+	resize: none;
+	/*background-color: #272822;
+	color : #ddd;*/
+}
+#codelines{
+	background-color: #272822;
+	width: 90%;
+	height: 100%;
+	resize: none;
+	border: 0px dotted;
+	border-right: 1px dotted;
+	border-color: #404040;
+	overflow-y: hidden;
+}
+#codelines::-webkit-scrollbar { width: 0 !important; }
+#sidebar{
+	width: 28%;
+	padding-top: 7px;
+}
+#sidebar table{
+	height: 100%;
+	width: 100%;
+}
+#sidebar table td{
+	width: 33%;
+}
+#registersTable div{
+	border: 1px solid;
+}
+.divimpar{
+	background-color: #272822 !important;
+	height: 17px;
+	border: 0.5px solid;
+	border-color: #000 !important;
+	color: #51b1d3;
+
+}
+.divpar{
+	height: 17px;
+	color: #e6b23f !important;
+	border-color: #000 !important;
+	background-color: #161713;
+
+}
+.debugtempDiv{
+	height: 17px;
+	color: #161713 !important;
+	border-color: #000 !important;
+	background-color: #e6b23f;
+
+}.tempTextarea{
+	width: 224px;
+	height: 15px;
+	resize: none;
+	border: 0px solid;
+	font-family: "Ubuntu Mono";	
+	font-size: 14px;
+	color: #000;
+}
+#header {
+	background-color: #161713;
+	border: 1px solid;
+	height: 5%;
+	margin-top: -7%;
+}
+#header ul {
+	list-style: none;
+	padding-left:32px;
+	margin:0;
+	height: 100%;
+	width: 30%;
+	min-width: 235px ; 
+
+}
+#header li {
+	background-color: #272822;
+	float: left;
+	border: 1px solid;
+	border-bottom-width: 0;
+	margin: 0em 0.5em 0 0;
+	display: inline;
+	border: solid;
+	border-width: 1px 1px 0 1px;
+	padding: 0 1em;
+	height: 100%;
+}
+#header li a{
+	display: block;
+	width: 80px;
+	text-decoration: none;
+	color: #fff;
+	padding-top: 6px;
+	font-size: 20px;
+}
+#header li :hover{
+
+}
+.selected {
+	padding-bottom: 1px; 
+	background: gray;
+}
+
+.fixed{
+	border: 0px solid;
+	color: #fff;
+	margin-left: 3px;
+	margin-top:3px;
+	height: 17px;
+}
+.dts_title{
+	height: 15px;
+}
+.dts_title td{
+	width: 103px;
+	border: 0px solid;
+	color: #fff;
+	margin-left: 3px;
+	margin-top:3px;
+}
+.clearRegisters{
+	background: url(/images/clear.svg) no-repeat;
+}
+/*#executer{
+	background-color: #aaa;
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+}
+#fileSave{
+	background-color: #aaa;
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+
+}*/
+.btn{
+	background-color: #3d3d3a;
+	height: 30px;
+	width: 30px;
+	border-radius: 1px;
+	border: 1px solid;
+	border-color: #000;
+}
+.btnDisabled{
+	background-color: #161713;
+	height: 30px;
+	width: 30px;
+	border-radius: 1px;
+	border: 1px solid;
+	border-color: #161713;
+}
+.btn:disabled{
+	background-color: #000;
+	color: #333;
+}
+.btn:disabled:hover{
+	background-color: #111;
+	color: #000;
+}
+.btn:hover{
+	background-color: #aaa;
+	border-color: #000;
+	/*height: 32px;
+	width: 32px;*/
+}
+#changeAdress{
+	position: relative;
+	padding-left: 3px;
+	margin-top: 5px;
+}
+.inputAdress{
+	position: inherit;
+	top: -10px;
+}
